@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
+#[ApiResource]
 class Book
 {
     #[ORM\Id]
@@ -22,8 +24,8 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $author = null;
 
-    #[ORM\Column]
-    private ?int $isbn = null;
+    #[ORM\Column(type: Types::BIGINT)]
+    private ?string $isbn = null;
 
     #[ORM\Column]
     private ?bool $isAvailable = null;
@@ -46,6 +48,11 @@ class Book
     public function __construct()
     {
         $this->idCategory = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->idBox;
     }
 
     public function getId(): ?int
@@ -77,12 +84,12 @@ class Book
         return $this;
     }
 
-    public function getIsbn(): ?int
+    public function getIsbn(): ?string
     {
         return $this->isbn;
     }
 
-    public function setIsbn(int $isbn): self
+    public function setIsbn(string $isbn): self
     {
         $this->isbn = $isbn;
 
@@ -172,4 +179,5 @@ class Book
 
         return $this;
     }
+
 }

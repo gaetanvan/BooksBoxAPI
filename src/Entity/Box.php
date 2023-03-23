@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BoxRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BoxRepository::class)]
+#[ApiResource]
 class Box
 {
     #[ORM\Id]
@@ -38,7 +40,10 @@ class Box
     {
         $this->books = new ArrayCollection();
     }
-
+    public function __toString()
+    {
+        return $this->id;
+    }
     public function getId(): ?int
     {
         return $this->id;
