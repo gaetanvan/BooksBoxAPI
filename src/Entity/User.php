@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +17,7 @@ class User
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -28,6 +30,7 @@ class User
     private ?string $avatar = null;
 
     #[ORM\Column(type: Types::GUID)]
+    #[ApiProperty(identifier: true)]
     private ?string $uuid = null;
 
     #[ORM\Column(type: Types::ARRAY)]
@@ -38,6 +41,9 @@ class User
 
     #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: Borrow::class)]
     private Collection $borrows;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $QRCode = null;
 
     public function __construct()
     {
@@ -147,6 +153,18 @@ class User
                 $borrow->setIdUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQRCode(): ?string
+    {
+        return $this->QRCode;
+    }
+
+    public function setQRCode(?string $QRCode): self
+    {
+        $this->QRCode = $QRCode;
 
         return $this;
     }
